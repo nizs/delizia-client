@@ -1,10 +1,10 @@
-import React from 'react';
 
-const RecommendItem = ({item}) => {
-    const { name, image, recipe } = item;
+const FoodCard = ({item}) => {
+    const { name, image, recipe, price } = item;
     return (
         <div className="card  bg-base-100 shadow-xl">
             <figure><img src={image} alt="Shoes" /></figure>
+            <p className='absolute right-0 mr-8 mt-4 px-4  bg-slate-900 text-white'>${price}</p>
             <div className="card-body">
                 <h2 className="card-title">{name}</h2>
                 <p>{recipe}</p>
@@ -16,4 +16,4 @@ const RecommendItem = ({item}) => {
     );
 };
 
-export default RecommendItem;
+export default FoodCard;
