@@ -5,7 +5,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { useState } from 'react';
 import useMenu from '../../../hooks/useMenu';
-import FoodCard from '../../shared/FoodCard/FoodCard';
 import OrderTab from '../OrderTab/OrderTab';
 import { useParams } from 'react-router-dom';
 
@@ -23,13 +22,13 @@ const Order = () => {
     const offered = menu.filter(item => item.category === 'offered');
     const drinks = menu.filter(item => item.category === 'drinks');
     return (
-        <div>
+        <section>
             <Helmet>
                 <title>Delizia | Order</title>
             </Helmet>
             {/* page cover */}
             <Cover coverImg={orderImg} title={'ORDER FROM US'} />
-            <Tabs defaultIndex={tabindex} onSelect={(index) => setTabindex(index)}>
+            <Tabs className='my-8 mx-8' defaultIndex={tabindex} onSelect={(index) => setTabindex(index)}>
                 <TabList>
                     <Tab>Salad</Tab>
                     <Tab>Pizza</Tab>
@@ -53,8 +52,7 @@ const Order = () => {
                     <OrderTab items={drinks}></OrderTab>
                 </TabPanel>
             </Tabs>
-
-        </div>
+        </section>
     );
 };
 
