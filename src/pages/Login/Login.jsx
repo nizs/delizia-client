@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../Provider/AuthProvider';
 import Swal from 'sweetalert2'
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const Login = () => {
     const capchaRef = useRef(null);
@@ -110,6 +111,8 @@ const Login = () => {
                                 <input disabled={disabled} className="btn btn-primary" type="submit" value="login" />
                             </div>
                             <p>Don't Have an account ? <Link to='/signup' >Signup</Link></p>
+                            <div className="divider mt-8">OR</div>
+                            <SocialLogin />
                             <div className="navbar-end mt-4">
                                 <Link to='/home'><a className="btn">Back To Home</a></Link>
                             </div>

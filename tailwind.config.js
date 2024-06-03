@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'display': ['Oswald'],
+      'body': ['"Open Sans"']
+    }
   },
   plugins: [require("daisyui")],
 }

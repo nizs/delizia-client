@@ -1,11 +1,15 @@
-import { signOut } from 'firebase/auth';
-import React, { useContext } from 'react';
+
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../Provider/AuthProvider';
 import './Navbar.css';
+import { MdOutlineShoppingCart } from "react-icons/md";
+import useAuth from '../../../hooks/useAuth';
+import useCart from '../../../hooks/useCart';
+
 
 const Navbar = () => {
-    const { user, logOut } = useContext(AuthContext);
+    const { user, logOut } = useAuth();
+    const [data] = useCart();
+    // console.log(data);
     const menuitem = <>
         <Link to='home'><li><a>Home</a></li></Link>
         <Link to='menu'><li><a>Our Menu</a></li></Link>
@@ -41,6 +45,16 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
+                {/* cart */}
+                <Link to='/dashboard/carts'>
+                    <div className="mr-6">
+                        <div className="relative py-2">
+                            <div className="t-0 absolute left-3">
+                                <p className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">{data.length}</p>
+                            </div>
+                            <MdOutlineShoppingCart className='mt-4 h-6 w-6' />
+                        </div>
+                    </div></Link>
                 {
                     user ?
                         <>

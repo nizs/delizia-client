@@ -5,13 +5,16 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../Provider/AuthProvider';
 import Swal from 'sweetalert2'
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import SocialLogin from '../../components/SocialLogin/SocialLogin';
 
 const Signup = () => {
     const capchaRef = useRef(null);
     const [disabled, setDesabled] = useState(true);
     const navigate = useNavigate();
     const { createUser, updateUserProfile } = useContext(AuthContext);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset,  formState: { errors } } = useForm();
+    const axiosPublic = useAxiosPublic();
 
     useEffect(() => {
         loadCaptchaEnginge(6);
@@ -24,27 +27,39 @@ const Signup = () => {
                 const loggedUser = result.user;
                 updateUserProfile(data.name, data.photoURL)
                     .then(() => {
-                        reset();
-                        Swal.fire({
-                            title: "User Signed Up Successfully",
-                            showClass: {
-                                popup: `
-                                    animate__animated
-                                    animate__fadeInUp
-                                    animate__faster
-                                  `
-                            },
-                            hideClass: {
-                                popup: `
-                                    animate__animated
-                                    animate__fadeOutDown
-                                    animate__faster
-                                  `
-                            }
-                        });
+                        // creating user entry into the DB
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email,
+                            photoURL: data.photoURL
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log(loggedUser);
+                                    console.log('user Info added to the DB');
+                                    reset();
+                                    Swal.fire({
+                                        title: "User Signed Up Successfully",
+                                        showClass: {
+                                            popup: `
+                                                animate__animated
+                                                animate__fadeInUp
+                                                animate__faster
+                                              `
+                                        },
+                                        hideClass: {
+                                            popup: `
+                                                animate__animated
+                                                animate__fadeOutDown
+                                                animate__faster
+                                              `
+                                        }
+                                    });
+                                }
+                            })
                     })
                     .catch(error => console.log(error))
-                console.log(loggedUser);
                 navigate('/menu');
             })
     }
@@ -134,6 +149,8 @@ const Signup = () => {
                                 <input disabled={disabled} className="btn btn-primary" type="submit" value="Signup" />
                             </div>
                             <p>Have an account ? <Link to='/login'>Login</Link> here</p>
+                            <div className="divider mt-8">OR</div>
+                            <SocialLogin />
                             <div className="navbar-end mt-4">
                                 <Link to='/home'><a className="btn">Back To Home</a></Link>
                             </div>
